@@ -1,0 +1,8 @@
+{
+    "files.eol": "\n",
+    "terminal.integrated.env.windows": {
+        "PATH": "${env:PATH};C:\\Programs\\neural_network_console_150\\libs\\Miniconda3;C:\\Programs\\neural_network_console_140\\libs\\Miniconda3\\Scripts"
+        "PYTHONPATH": "${env:PYTHONPATH};C:\\Programs\\neural_network_console_150\\libs\\nnabla\\python\\src"
+    }
+    "python.pythonPath": "C:\\Programs\\neural_network_console_150\\libs\\Miniconda3\\python.exe"
+}
