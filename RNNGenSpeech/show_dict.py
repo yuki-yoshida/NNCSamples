@@ -5,15 +5,13 @@ Usage:
 
 from __future__ import print_function
 
-from make_dict import CharTable
-import pickle
+from make_dict import CharTable, load_dict
 import sys
 import io
 
 def main():
     path = sys.argv[1]
-    with open(path, "rb") as f:
-        char_table = pickle.load(f)
+    char_table = load_dict(path)
     print(char_table.ids2str(range(0,len(char_table.char2id_dict))))
     print('code size:', len(char_table.char2id_dict))
 

@@ -120,8 +120,8 @@ def network_LSTM(x, D, C, InputShape, HiddenSize, test=False):
     return h5
 
 
-train_result_path = "C:/Users/yoshidh/WorkData/NNC/0724UenoW.files/20190815_124958" + "/results.nnp"
-# train_result_path = "./result_train.nnp"
+# train_result_path = "C:/Users/yoshidh/WorkData/NNC/0724UenoW.files/20190815_124958" + "/results.nnp"
+train_result_path = "./result_train.nnp"
 hidden_size1 = 100
 hidden_size2 = 64
 char_table_path = "./UenoTodaiSpeech+.pkl"
@@ -177,7 +177,10 @@ def main():
         c2.d = CO2.d
         print(c,end="")
 
+    sample_and_print = lambda id: print(char_table.id2char(id),end="")
+
     id = sample(dist,temperature)
+    sample_and_print(id)
     for i in range(text_size-len(first_word)):
         x.d[0] = id
         CO1.forward()
@@ -190,10 +193,8 @@ def main():
         c1.d = CO1.d
         d2.d = DO2.d
         c2.d = CO2.d
-
         id = sample(dist,temperature)
-        char = char_table.id2char(id)
-        print(char,end="")
+        sample_and_print(id)
     print()
 
 if __name__ == '__main__':

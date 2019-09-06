@@ -169,7 +169,10 @@ def main():
         c2.d = CO2.d
         print(c,end="")
 
+    sample_and_print = lambda id: print(char_table.id2char(id),end="")
+
     id = sample(dist,temperature)
+    sample_and_print(id)
     for i in range(text_size-len(first_word)):
         x.d[0] = id
         CO1.forward()
@@ -184,8 +187,7 @@ def main():
         c2.d = CO2.d
 
         id = sample(dist,temperature)
-        char = char_table.id2char(id)
-        print(char,end="")
+        sample_and_print(id)
     print()
 
 if __name__ == '__main__':

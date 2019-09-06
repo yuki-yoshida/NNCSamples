@@ -5,9 +5,8 @@ Usage:
 
 from __future__ import print_function
 
-from make_dict import CharTable
+from make_dict import CharTable, load_dict
 import numpy as np
-import pickle
 import sys
 import io
 import csv
@@ -38,8 +37,7 @@ def main():
     row1 = int(sys.argv[3])
     row2 = int(sys.argv[4]) if len(sys.argv) > 4 else row1
     tops = int(sys.argv[5]) if len(sys.argv) > 5 else 5
-    with open(path1, "rb") as f:
-        char_table = pickle.load(f)
+    char_table = load_dict(path1)
     print('code size:', len(char_table.char2id_dict))
     output2str(path2, char_table, row1, row2, tops)
 

@@ -77,7 +77,10 @@ def main():
         d.d = delayo.d
         print(first_word[i],end="")
 
+    sample_and_print = lambda id: print(char_table.id2char(id),end="")
+
     id = sample(dist,temperature)
+    sample_and_print(id)
     for i in range(text_size-skip_len):
         x.d[0] = id
         delayo, softm = network(x, d)
@@ -86,8 +89,7 @@ def main():
         dist = softm.d[0]
         d.d = delayo.d
         id = sample(dist,temperature)
-        char = char_table.id2char(id)
-        print(char,end="")
+        sample_and_print(id)
     print()
 
 if __name__ == '__main__':

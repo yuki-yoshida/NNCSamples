@@ -60,17 +60,15 @@ def load_text(path):
     else:
         # 英語の時は、改行を空白にし、小文字に変更。
         text = ' '.join(raw_text.splitlines()).lower()
+    print('text length:', len(text))
     return text
 
-def main():
-    path1 = sys.argv[1]
-    path2 = sys.argv[2]
-    text = load_text(path1)
-    print('text length:', len(text))
+def make_dict(text,path):
     char_table = CharTable(text)
     print('code size:', len(char_table.char2id_dict))
-    char_table.str2ids(text)
-    with open(path2, "wb") as f:
+    with open(path, "wb") as f:
         pickle.dump(char_table, f)
-if __name__ == '__main__':
-    main()
+
+def load_dict(path):
+    with open(path, "rb") as f:
+        return pickle.load(f)
