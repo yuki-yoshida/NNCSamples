@@ -16,10 +16,6 @@ import nnabla as nn
 import nnabla.functions as F
 import nnabla.parametric_functions as PF
 
-import nnabla as nn
-import nnabla.functions as F
-import nnabla.parametric_functions as PF
-
 def network(x, d1, c1, d2, c2, test=False):
     # Input:x -> 1
     # OneHot -> 687
@@ -126,10 +122,10 @@ hidden_size1 = 100
 hidden_size2 = 64
 char_table_path = "./UenoTodaiSpeech+.pkl"
 
-tweak1 = 0.00001 # to force pred > 0
-tweak2 = 1.00001 # to force sum(pred) < 1
-
 def sample(preds, temperature):
+    tweak1 = 0.00001 # to force pred > 0
+    tweak2 = 1.00001 # to force sum(pred) < 1
+
     if temperature == 0:
         return np.argmax(preds)
     preds = np.log(preds + tweak1) / temperature
@@ -140,7 +136,6 @@ def sample(preds, temperature):
 
 def main():
     first_word = sys.argv[1].lower()
-    # first_word = " おめでとうございます" 
     text_size = int(sys.argv[2])
     temperature = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
 

@@ -12,116 +12,15 @@ import pickle
 import sys
 import re
 
-import nnabla as nn
-import nnabla.functions as F
-import nnabla.parametric_functions as PF
-
-def network(x, d1, c1, d2, c2, test=False):
-    # Input:x -> 1
-    # OneHot -> 38
-    h = F.one_hot(x, (38,))
-
-    # LSTM1 -> 200
-    with nn.parameter_scope('LSTM1'):
-        h = network_LSTM(h, d1, c1, 38, 100, test)
-
-    # Slice -> 100
-    h1 = F.slice(h, (0,), (100,), (1,))
-
-    # CellOut -> 100
-    h2 = F.slice(h, (100,), (200,), (1,))
-
-    # LSTM2 -> 128
-    with nn.parameter_scope('LSTM2'):
-        h3 = network_LSTM(h1, d2, c2, 100, 64, test)
-
-    # DelayOut
-    h4 = F.identity(h1)
-
-    # Slice_2 -> 64
-    h5 = F.slice(h3, (0,), (64,), (1,))
-
-    # CellOut_2 -> 64
-    h6 = F.slice(h3, (64,), (128,), (1,))
-
-    # Affine_2 -> 38
-    h7 = PF.affine(h5, (38,), name='Affine_2')
-
-    # DelayOut_2
-    h8 = F.identity(h5)
-    # Softmax
-    h7 = F.softmax(h7)
-    return h2, h4, h6, h8, h7
-
-def network_LSTM(x, D, C, InputShape, HiddenSize, test=False):
-    # Input_2:x -> 38
-    # Delya_in:D -> 100
-    # Cell_in:C -> 100
-
-    # Concatenate -> 138
-    h = F.concatenate(D, x, axis=1)
-
-    # Affine -> 100
-    h1 = PF.affine(h, HiddenSize, name='Affine')
-
-    # InputGate -> 100
-    h2 = PF.affine(h, HiddenSize, name='InputGate')
-
-    # OutputGate -> 100
-    h3 = PF.affine(h, HiddenSize, name='OutputGate')
-
-    # ForgetGate -> 100
-    h4 = PF.affine(h, HiddenSize, name='ForgetGate')
-    # Sigmoid
-    h1 = F.sigmoid(h1)
-    # Sigmoid_2
-    h2 = F.sigmoid(h2)
-
-    # Sigmoid_3
-    h3 = F.sigmoid(h3)
-    # Sigmoid_4
-    h4 = F.sigmoid(h4)
-
-    # Mul2 -> 100
-    h1 = F.mul2(h1, h2)
-
-    # Mul2_3 -> 100
-    h4 = F.mul2(h4, C)
-
-    # Add2 -> 100
-    h1 = F.add2(h1, h4, True)
-
-    # Tanh
-    h5 = F.tanh(h1)
-
-    # Cell_out
-    h6 = F.identity(h1)
-
-    # Mul2_2 -> 100
-    h5 = F.mul2(h5, h3)
-    # Dropout
-    if not test:
-        h5 = F.dropout(h5)
-
-    # Output
-    h5 = F.identity(h5)
-
-    # Concatenate_2 -> 200
-    h5 = F.concatenate(h5, h6, axis=1)
-    return h5
-
-
-# train_result_path = "C:/Users/yoshidh/WorkData/NNC/0809Obama20W.files/20190813_151539 A0.005" + "/results.nnp"
-# train_result_path = "./result_train.nnp"
-train_result_path = "./Obama20Wresult_train.nnp"
+train_result_path = "Your trained result nnp"
 hidden_size1 = 100
 hidden_size2 = 64
-char_table_path = "./ObamaHiroshimaSpeech.pkl"
-
-tweak1 = 0.00001 # to force pred > 0
-tweak2 = 1.00001 # to force sum(pred) < 1
+char_table_path = "./UenoTodaiSpeech+.pkl"
 
 def sample(preds, temperature):
+    tweak1 = 0.00001 # to force pred > 0
+    tweak2 = 1.00001 # to force sum(pred) < 1
+
     if temperature == 0:
         return np.argmax(preds)
     preds = np.log(preds + tweak1) / temperature
@@ -132,7 +31,6 @@ def sample(preds, temperature):
 
 def main():
     first_word = sys.argv[1].lower()
-    # first_word = " おめでとうございます" 
     text_size = int(sys.argv[2])
     temperature = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
 
