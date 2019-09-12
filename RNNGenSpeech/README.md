@@ -36,11 +36,11 @@ Sigmoidの結果は２つに分岐して、１つは次の文字の処理のた�
 
 全体は、典型的なRNNであるElmanネットの構造になっています。
 
-入力層では、長さ20の入力の各文字コードをOne Hot形式に変換して、20 $\\times$ 38のデータとします。
+入力層では、長さ20の入力の各文字コードをOne Hot形式に変換して、20×38のデータとします。
 
-Sony Neural Network ConsoleでBack-Propagation through time(BPTT)を行う場合、繰り返し部分を「RecurrentInput」と「RecurrentOutput」で囲みます。隠れ層のデータはDelayを使って次の文字の処理の入力とします。RecurrentOutputは、20文字分の処理結果を２次元配列20 $\\times$ 38で出力します。
+Sony Neural Network ConsoleでBack-Propagation through time(BPTT)を行う場合、繰り返し部分を「RecurrentInput」と「RecurrentOutput」で囲みます。隠れ層のデータはDelayを使って次の文字の処理の入力とします。RecurrentOutputは、20文字分の処理結果を２次元配列20×38で出力します。
 
-評価関数CategoricalCrossEntropyは、推定データが２次元の場合には正解データも２次元でなければならないので、正解データyを20 $\\times$ 1の２次元データに変換します。
+評価関数CategoricalCrossEntropyは、推定データが２次元の場合には正解データも２次元でなければならないので、正解データyを20×1の２次元データに変換します。
 
 ## LSTM(Long Short-Term Memory)
 
@@ -54,7 +54,7 @@ Sony Neural Network ConsoleでBack-Propagation through time(BPTT)を行う場合
 <img alt="LSTM Unit" src="./LSTMUnit4Train.png" title="訓練に使うLSTMサブネット" size="20%"/>
 
 サブネットワークのパラメタは以下の２つです。
- - InputShape：入力サイズ（デフォルト： 20 $\\times$ 687）
+ - InputShape：入力サイズ（デフォルト： 20×687）
  - HiddenSize：隠れ層のサイズ（デフォルト： 100）
 
 また、最後にDropoutも追加してあります。
@@ -66,7 +66,7 @@ Sony Neural Network ConsoleでBack-Propagation through time(BPTT)を行う場合
 
 １つ目のLSTM層のサイズは100、２つ目は64です。
 
-LSTM Unit内でDelayを使うためには、RecurrentInputとRecurrentOutputで囲む必要があるので、出力は20 $\\times$ 64の２次元データになります。そこで出力層でももう一度RecurrentInputとRecurrentOutputで囲んで処理しています。これによって、Affine_2において、64 $\\times$ 687の重みを20回分共有できます。RecurrentInputとRecurrentOutputで囲まないで単純にAffineを通すと重みが20 $\\times$ 64 $\\times$ 687個になってしまいます。
+LSTM Unit内でDelayを使うためには、RecurrentInputとRecurrentOutputで囲む必要があるので、出力は20×64の２次元データになります。そこで出力層でももう一度RecurrentInputとRecurrentOutputで囲んで処理しています。これによって、Affine_2において、64×687の重みを20回分共有できます。RecurrentInputとRecurrentOutputで囲まないで単純にAffineを通すと重みが20×64×687個になってしまいます。
 
 ## LSTM Unit(推論時)
 ネットワークをPythonコードにexportすると、Unitはサブ関数に変換され、Mainネットワークのコードから呼び出されます。
